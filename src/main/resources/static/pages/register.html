@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,user-scalable=no,minimal-ui">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../img/asset-favico.ico">
+    <link rel="stylesheet" href="../css/page-health-orderNotice.css" />
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <script>
+        if(window.self != window.top){
+            window.top.location = window.location;
+        }
+    </script>
+    <style type="text/css">
+        .pushValue{
+            width: 400px;
+        }
+        .contentBox {
+            background-color: #d3dce6;
+        }
+        .context{
+            padding-top: 20px;
+            padding-right: 120px;
+        }
+        .userStyle{
+            font-style: normal;
+            text-align:center ;
+            font-size: 20px;
+        }
+        .check{
+            padding-left: 100px;
+        }
+    </style>
+    <script src="../js/axios-0.18.0.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+    <!-- 引入组件库 -->
+</head>
+
+<body data-spy="scroll" data-target="#myNavbar" data-offset="150">
+<div class="app">
+    <!-- 页面头部 -->
+    <div class="top-header">
+        <span class="f-left"><i class="icon-back" onclick="history.go(-1)"></i></span>
+        <span class="center">万顺驾培</span>
+        <span class="f-right"><i class="icon-more"></i></span>
+    </div >
+    <div class="contentBox">
+        <div class="userStyle">用户注册</div>
+        <div class="context" >
+            <el-form ref="form" :model="form" label-width="130px">
+                <el-form-item>
+                    <el-input v-model="form.name" placeholder="请输入手机号"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="form.name" placeholder="请输入密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="form.name" placeholder="请再次输入密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="form.name" placeholder="请再次输入密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                        <el-input v-model="form.name" placeholder="请输入验证码"></el-input>
+                        <el-button type="info" plain>获取验证码</el-button>
+                </el-form-item>
+            </el-form>
+            <div class="check">
+                <template>
+                    <el-checkbox v-model="checked">
+                        已经阅读并表示同意
+                        <div text="<<万顺学车用户协议>>">
+                        </div>
+                    </el-checkbox>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    var vue = new Vue({
+        el:".app" ,
+        data : {
+            form : {
+                username : "" ,
+                password : "" ,
+                nextPassword : ""
+            }
+        }
+    })
+</script>

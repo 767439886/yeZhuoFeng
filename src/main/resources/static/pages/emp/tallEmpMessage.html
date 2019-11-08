@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>基本信息</title>
+    <meta name="description" content="传智健康">
+    <meta name="keywords" content="传智健康">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/elementui/index.css">
+    <link rel="stylesheet" href="../../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .grid-content {
+            color: #0abdfe ;
+            font-size: 25px;
+            text-align: center
+        }
+    </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+    <div slot="header" class="clearfix">
+        <span style="text-align: center"></span>
+    </div>
+    <div class="text item">
+        <div>
+            <div class="app-container">
+                <div class="grid-content">人员高级信息</div>
+                <div class="box">
+                    <div class="excelTime">更新日期：{{people.updateDay}}</div>
+                    <table class="exceTable" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td colspan="4" class="headBody">入职信息</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center" width='20%' class="tabletrBg">入职日期</td>
+                            <td width='30%'>{{people.joinJob}}</td>
+                            <td style="text-align: center" width='20%' class="tabletrBg">转正日期</td>
+                            <td width='30%'>{{people.regularization}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center" class="tabletrBg">合同起始日期</td>
+                            <td>{{people.contractStart}}</td>
+                            <td style="text-align: center" class="tabletrBg">合同截至日期</td>
+                            <td>{{people.contractEnd}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="headBody">其他信息</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center" class="tabletrBg">职位</td>
+                            <td>{{people.jobName}}</td>
+                            <td style="text-align: center" class="tabletrBg">部门</td>
+                            <td>{{people.departmentName}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center" class="tabletrBg">合同期限</td>
+                            <td>{{people.contractIndate}}</td>
+                            <td style="text-align: center" class="tabletrBg">聘用形式</td>
+                            <td>{{people.jobpattern}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .text {
+        font-size: 20px;
+    }
+
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+
+    .box-card {
+        width: 30cm;
+        height: 850px;
+    }
+</style>
+</body>
+<!-- 引入组件库 -->
+<script src="../../js/vue.js"></script>
+<script src="../../plugins/elementui/index.js"></script>
+<script src="../../js/axios-0.18.0.js"></script>
+<script>
+    var that ;
+    var vue = new Vue({
+        el: '#app',
+        data:{
+            people:{
+                updateDay : "" ,
+                joinJOb : "暂时没有" ,
+                regularization : "暂时没有" ,
+                contractStart : "暂时没有" ,
+                contractEnd : "暂时没有" ,
+                jobName : "暂时没有" ,
+                departmentName : "暂时没有" ,
+                contractIndate : "暂时没有" ,
+                jobpattern : "暂时没有" ,
+            }
+        },
+        created: function() {
+            that = this ;
+            that.writeExcel () ;
+        } ,
+        methods:{
+            writeExcel : function() {
+                axios.post( "/Emp/tallWriteEmp" ).then(function (value) {
+                    var data = value.data ;
+                    if ( data.booler ) {
+                        that.people = data.entity ;
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
