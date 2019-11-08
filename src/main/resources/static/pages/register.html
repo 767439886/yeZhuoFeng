@@ -36,6 +36,22 @@
         .check{
             padding-left: 100px;
         }
+        .button{
+            padding-top: 30px;
+            text-align:center ;
+            padding-bottom: 200px;
+        }
+        .registerButton{
+            width: 300px;
+        }
+        .verifyError{
+            font-size: 12px ;
+            color: red ;
+        }
+        .verifySuccess{
+            font-size: 12px ;
+            color: green ;
+        }
     </style>
     <script src="../js/axios-0.18.0.js"></script>
     <script src="../js/jquery.min.js"></script>
@@ -57,43 +73,112 @@
         <div class="context" >
             <el-form ref="form" :model="form" label-width="130px">
                 <el-form-item>
-                    <el-input v-model="form.name" placeholder="请输入手机号"></el-input>
+                    <el-input @blur="usernameBlur" v-model="form.username" placeholder="请输入手机号"></el-input>
+                    <span v-html="verifyUsername.message"></span>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="form.name" placeholder="请输入密码"></el-input>
+                    <el-input @blur="passwordBlur" v-model="form.password" placeholder="请输入密码,必须满足6位数"></el-input>
+                    <span v-html="verifyPassword.message" ></span>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="form.name" placeholder="请再次输入密码"></el-input>
+                    <el-input @blur="nextPasswordBlur" v-model="form.nextPassword" placeholder="请再次输入密码"></el-input>
+                    <span v-html="verifyNextPassword.message" ></span>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="form.name" placeholder="请再次输入密码"></el-input>
-                </el-form-item>
-                <el-form-item>
-                        <el-input v-model="form.name" placeholder="请输入验证码"></el-input>
-                        <el-button type="info" plain>获取验证码</el-button>
+                        <el-input v-model="form.authCode" placeholder="请输入验证码"></el-input>
+                        <el-button disabled="disable" type="info" plain>获取验证码</el-button>
                 </el-form-item>
             </el-form>
             <div class="check">
                 <template>
                     <el-checkbox v-model="checked">
                         已经阅读并表示同意
-                        <div text="<<万顺学车用户协议>>">
-                        </div>
+                        <span class="agreement">
+                            <el-link :underline="false" href="xxx" type="success">《万顺学车用户协议》</el-link>
+                        </span>
                     </el-checkbox>
                 </template>
             </div>
         </div>
+        <el-row class="button">
+            <el-button class="registerButton" type="success">立即注册</el-button>
+        </el-row>
     </div>
 </div>
 </body>
 <script type="text/javascript">
+    var that ;
     var vue = new Vue({
         el:".app" ,
         data : {
+            //  登录的表单
             form : {
                 username : "" ,
                 password : "" ,
-                nextPassword : ""
+                nextPassword : "" ,
+                authCode : ""
+            } ,
+
+            //  验证是否符合要求
+            verifyState : false ,
+
+            //  表单的验证提示
+            verifyUsername : {
+                message : "" ,
+                bool : false
+            } ,
+            verifyPassword : {
+                message : "" ,
+                bool : false
+            } ,
+            verifyNextPassword : {
+                message : "" ,
+                bool : false
+            } ,
+            checked : "" ,
+
+            //  获取验证码的状态
+            disable : false
+        } ,
+        created : function() {
+             that = this ;
+        } ,
+        methods : {
+            test : function () {
+                alert( that.checked ) ;
+            } ,
+            usernameBlur : function () {
+                //  手机号检验规则
+                var reg = /^1[3|4|5|7|8|9][0-9]{9}$/;
+                //  进行校验
+                if( reg.test( that.form.username) ) {
+                    that.verifyUsername.message = "<span class='verifySuccess'>输入成功</span>"
+                    that.verifyUsername.bool = true ;
+                } else {
+                    that.verifyUsername.message = "<span class='verifyError'>不符合规范</span>"
+                    that.verifyUsername.bool = false ;
+                }
+            } ,
+            passwordBlur : function () {
+                //  密码检验规则
+                var reg = /^[0-9a-zA-Z]{6}$/;
+                //  进行校验
+                if( reg.test( that.form.username) ) {
+                    that.verifyPassword.message = "<span class='verifySuccess'>输入成功</span>"
+                    that.verifyPassword.bool = true ;
+                } else {
+                    that.verifyPassword.message = "<span class='verifyError'>不符合规范</span>"
+                    that.verifyPassword.bool = false ;
+                }
+            } ,
+            nextPasswordBlur : function () {
+                if ( that.form.password == that.form.nextPassword ) {
+                    that.verifyNextPassword = "<span class='verifySuccess'>输入成功</span>"
+                    that.verifyNextPassword.bool = true ;
+                } else {
+                    that.verifyNextPassword = "<span class='verifyError'>不符合规范</span>"
+                    that.verifyNextPassword.bool = false ;
+                }
             }
         }
     })
