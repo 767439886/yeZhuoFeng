@@ -17,8 +17,10 @@ a {
 	/* background: #0abdfe; */
 }
 .skin-purple .main-header {
-	min-height: 70px;
+	min-height: 55px;
 	padding: 0;
+    padding-bottom: 0px ;
+    padding-top: 0px;
 }
 .skin-purple .main-header .logo {
 	height: 50px;

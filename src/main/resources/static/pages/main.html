@@ -9,20 +9,19 @@
     <meta name="keywords" content="交流平台">
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="../plugins/elementui/index.css">
+<!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
     <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
     <style type="text/css">
         .el-main{
+            margin: 0px;
             position: absolute;
             top: 70px;
             bottom: 0px;
             left: 200px;
             right: 10px;
             padding: 0;
-        }
-        .usernameStyle{
-            color: #2d3a4b;
         }
         .avatar-uploader .el-upload {
             border: 1px dashed #d9d9d9;
@@ -34,136 +33,106 @@
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
-        .avatar-uploader-icon {
-            font-size: 28px;
-            color: #8c939d;
-            width: 178px;
-            height: 178px;
-            line-height: 178px;
-            text-align: center;
+        .head{
+            padding-left: 500px;
+            font-size: 30px;
         }
-        .avatar {
-            width: 178px;
-            height: 178px;
-            display: block;
+        .tac{
+            margin: 0cm;
+            padding: 0cm;
+            width: 200px;
+            height:16cm;
+        }
+        .el-menu-demo{
+            padding-top: 0px;
         }
     </style>
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
 </head>
 <body class="hold-transition skin-purple sidebar-mini">
     <div id="app">
+    <el-container>
+        <el-header  class="main-header">
+            <el-menu
+                :default-active="activeIndex2"
+                class="el-menu-demo"
+                mode="horizontal"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-menu-item index="2">我的工作台</el-menu-item>
+            <el-menu-item class="head"  index="5">万顺驾培</el-menu-item>
+            <div class="right-menu">
+               <span class="help">管理员</span>
+                  <el-dropdown class="avatar-container right-menu-item" trigger="click">
+                     <div class="avatar-wrapper">
+                        <img src="../img/134.jpg" class="user-avatar">
+                     </div>
+                     <el-dropdown-menu slot="dropdown">
+                       <el-dropdown-item divided>
+                          <span  style="display:block;">修改密码</span>
+                       </el-dropdown-item>
+                       <el-dropdown-item divided>
+                          <span style="display:block;" >退出</span>
+                       </el-dropdown-item>
+                       <el-dropdown-item divided>
+                          <span style="display:block;" >跟换头像</span>
+                        </el-dropdown-item>
+                   </el-dropdown-menu>
+               </el-dropdown>
+            </div>
+        </el-menu>
+        </el-header>
         <el-container>
-            <el-header  class="main-header" style="height:70px;">
-                <nav class="navbar navbar-static-top" :class=''>
-                    <!-- Logo -->
-                    <a href="#" class="logo" style="text-align:center">
-                        <span class="logo-lg" style="font-size:20px">微人事</span>
-                    </a>
-
-                    <div class="right-menu">
-                        <span class="help">{{username.name}}</span>
-                        <el-dropdown class="avatar-container right-menu-item" trigger="click">
-                            <div class="avatar-wrapper">
-                                <img :src="username.userface" class="user-avatar">
-                            </div>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item divided>
-                                    <span @click="ChangePassword" style="display:block;">修改密码</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
-                                        <span style="display:block;" @click="outLogin">退出</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
-                                    <span style="display:block;" @click="updateHead">跟换头像</span>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                </nav>
-            </el-header>
+           <el-aside>
+               <el-row class="tac">
+                   <el-col :span="12">
+                       <el-menu
+                               default-active="2"
+                               class="tac"
+                               background-color="#545c64"
+                               text-color="#fff"
+                               active-text-color="#ffd04b">
+                           <el-submenu index="1">
+                               <template slot="title">
+                                   <i class="el-icon-location"></i>
+                                   <span>首页</span>
+                               </template>
+                               <el-menu-item @click="button(1)" class="el-icon-s-management" index="1-1">
+                                   热门首选
+                               </el-menu-item>
+                           </el-submenu>
+                           <el-menu-item index="3">
+                               <i class="el-icon-user-solid"></i>
+                               <span slot="title">教练</span>
+                           </el-menu-item>
+                           <el-menu-item index="4">
+                               <i class="el-icon-setting"></i>
+                               <span slot="title">驾校</span>
+                           </el-menu-item>
+                       </el-menu>
+                   </el-col>
+               </el-row>
+            </el-aside>
             <el-container>
-                <el-aside width="200px">
-                    <el-menu>
-                        <el-submenu v-for="menu in menuList" :index="menu.path">
-                            <template slot="title">
-                                <i class="fa" :class="menu.icon">
-                                    {{menu.name}}
-                                </i>
-                            </template>
-                             <template v-for="child in menu.chilMuenu">
-                                <el-menu-item :index="child.path">
-                                    <a :href="child.url" target="right">{{child.name}}</a>
-                                </el-menu-item>
-                             </template>
-                        </el-submenu>
-                    </el-menu>
-                </el-aside>
-                <el-container>
-                    <iframe name="right" class="el-main" src="/pages/emp/empMessage.html" width="100%" height="580px" frameborder="0"></iframe>
-                </el-container>
+                <!--  嵌套使用  -->
+                <iframe name="right" class="el-main" :src="picPath" width="100%" height="580px" frameborder="0"></iframe>
             </el-container>
         </el-container>
-        <div class="talkDiv" >
-            <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
-                <div style="color: red">如果是第一次登录，默认密码为：123</div>
-                <el-form :visible.sync="dialogFormVisible" ref="form" :model="form" label-width="100px">
-                    <el-form-item label="旧密码">
-                        <el-input v-model="form.oldPassword"></el-input>
-                    </el-form-item>
-                    <el-form-item label="确认旧密码">
-                        <el-input @blur="oldPasswordSure" v-model="form.oldTwoPassword"></el-input>
-                        <span style="color: red">{{form.hint}}</span>
-                    </el-form-item>
-                    <el-form-item label="新密码">
-                        <el-input @blur="newPasswordSure" v-model="form.newPassword"></el-input>
-                    </el-form-item>
-                </el-form>
-                <el-row>
-                    <el-button @click="clickSuccess" :disabled="dialogFormSuccess" type="success">修改按钮</el-button>
-                </el-row>
-            </el-dialog>
-        </div>
-        <div class="talkDiv">
-            <el-dialog title="修改头像" :visible.sync="dialogheadConceal">
-                <span style="color: red">可以上传，也可以直接使用已有的头像</span>
-                <el-row>
-                    <el-upload
-                            class="avatar-uploader"
-                            action="/login/upLoad"
-                            :show-file-list="false"
-                            :on-success="handleAvatarSuccess"
-                            :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                    <el-button @click="sureHead" type="success">确定头像</el-button>
-                </el-row>
-                <el-row>
-                    <el-col v-for="img in imgList" :span="4"><div class="grid-content bg-purple">
-                        <img @click="clickHead(img)" width="100px" height="100px" :src="img"></div>
-                    </el-col>
-                </el-row>
-            </el-dialog>
-        </div>
+    </el-container>
     </div>
 </body>
-<!-- 引入组件库 -->
-<script src="../js/vue.js"></script>
-<script src="../js/axios-0.18.0.js"></script>
-<script src="../plugins/elementui/index.js"></script>
-<script type="text/javascript" src="../js/jquery.min.js"></script>
 <script>
     var that ;
     new Vue({
         el: '#app',
         data:{
-            username:"",
-            menuList:[] ,
-            imgList:[] ,
-            htmlChild:"" ,
-            imageUrl : "" ,
-            dialogheadConceal : false ,
-            dialogFormVisible : false ,
-            dialogFormSuccess : true ,
+            picPath:"../pages/headPage/welcome.html" ,
+            username:"" ,
             form : {
                 hint : "" ,
                 oldPassword : "" ,
@@ -174,132 +143,17 @@
         },
         created: function() {
             that = this ;
-            that.searchMenu() ;
         },
         methods : {
-            searchMenu:function(){
-                that.userName() ;
-                axios.get( "/menu/searchMenu" ).then(function (value) {
-                    var data = value.data ;
-                    if ( data.booler ) {
-                        that.menuList = data.entity[0].chilMuenu ;
-                    } else {
-                        this.$message.error("搜索错误");
-                    }
-                })
-                that.allUrl() ;
-            } ,
-            userName:function () {
-                axios.get( "/login/getUser" ).then(function (value) {
-                    var data = value.data ;
-                    if ( data.booler ) {
-                        that.username = data.entity ;
-                    } else {
-                        window.location.href = "/login.html" ;
-                        //  需要登录
-                    }
-                })
-            } ,
-            ChangePassword : function () {
-                that.dialogFormVisible = true ;
-            } ,
-            outLogin : function () {
-                axios.get( "/login/outLogin").then(function (value) {
-                    data = value.data ;
-                    if ( data.booler ) {
-                        location.href = "/logout" ;
-                    } else {
-                        that.$message.error( data.message ) ;
-                    }
-                })
-            } ,
-            oldPasswordSure : function () {
-                that.form.hint = ""
-                if ( that.form.oldPassword != that.form.oldTwoPassword ){
-                    that.form.hint = "输入的密码不正确"
+            button : function (value) {
+                if ( value == 1 ) {
+                    that.picPath = "../pages/headPage/hotProject.html" ;
                 }
-            } ,
-            newPasswordSure : function () {
-                that.dialogFormSuccess = true ;
-                if ( that.form.oldPassword != that.form.oldTwoPassword ){
-                    that.form.hint = "输入的密码不正确"
-                } else {
-                    if ( that.form.newPassword != "" ) {
-                        that.dialogFormSuccess = false ;
-                    }
-                }
-            } ,
-            clickSuccess : function () {
-                axios.get( "/login/updatePassword?oldPassword="
-                + that.form.oldTwoPassword + "&newPassword="
-                + that.form.newPassword ).then(function (value) {
-                    data = value.data ;
-                    if ( data.booler ) {
-                        that.$message({
-                            message: '修改成功' ,
-                            type: 'success'
-                        });
-                        location.href = "/logout" ;
-                    } else {
-                        that.$message.error( "修改密码失败" ) ;
-                    }
-                })
-            } ,
-            // 上传的验证3
-            beforeAvatarUpload : function (file) {
-                isJPG = file.type === 'image/jpeg';
-                isLt2M = file.size / 1024 / 1024 < 2;
-                if (!isJPG) {
-                    this.$message.error('上传套餐图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传套餐图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            } ,
-            handleAvatarSuccess : function (res) {
-                //  此处的res没有.data
-                if( res.booler ) {
-                    that.imageUrl = "http://image.pinyougou.com/MyPic/"+ res.entity ;
-                } else {
-                    that.$message.error( res.data.message ) ;
-                }
-            } ,
-            allUrl: function () {
-                axios.get( "/login/allImg" ).then(function (value) {
-                    res = value.data ;
-                    if( res.booler ) {
-                        for ( i = 0 ; i < res.entity.length ; i++ ) {
-                            path = "http://image.pinyougou.com/" + res.entity[i] ;
-                            that.imgList.push( path ) ;
-                        }
-                    } else {
-                        that.$message.error( res.data.message ) ;
-                    }
-                })
-            } ,
-            clickHead : function (img) {
-                that.imageUrl = img ;
-            } ,
-            sureHead : function () {
-                axios.get( "/login/sureHead?imgPath=" + that.imageUrl ).then(function (value) {
-                    data = value.data ;
-                    if ( data.booler ) {
-                        that.dialogheadConceal = false ;
-                        that.searchMenu() ;
-                    } else {
-                        that.$message.error( data.message ) ;
-                    }
-                })
-            } ,
-            updateHead : function () {
-                that.dialogheadConceal = true ;
             }
         }
     });
     $(function() {
-            var wd = 200;
-            $(".el-main").css('width', $('body').width() - wd + 'px');
+        var wd = 200;
+        $(".el-main").css('width', $('body').width() - wd + 'px');
     });
 </script>
-</html>

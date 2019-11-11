@@ -93,7 +93,7 @@
                                 <el-button class="but" type="danger">登录</el-button>
                             </el-row>
                             <el-row class="buttonType">
-                                <el-button class="but" type="warning">注册</el-button>
+                                <el-button @click="register" class="but" type="warning">注册</el-button>
                             </el-row>
                         </div>
                     </form>
@@ -103,6 +103,7 @@
     </div>
 </body>
 <script type="text/javascript">
+    var that ;
     var vue = new Vue({
         el:".app" ,
         data : {
@@ -111,6 +112,14 @@
             form : {
                 username : "" ,
                 password : ""
+            }
+        } ,
+        created : function () {
+            that = this ;
+        } ,
+        methods : {
+            register : function () {
+                location.href = "/pages/register.html" ; 
             }
         }
     })

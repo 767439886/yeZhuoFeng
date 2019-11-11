@@ -24,6 +24,7 @@ public class register{
     @GetMapping( "/sendVerifyCode" )
     public Result sendVerityCode () {
         try {
+
             return new Result( "注册成功" , true   ) ;
         } catch ( Exception e ) {
             return new Result( "发送验证码失败" , false ) ;
